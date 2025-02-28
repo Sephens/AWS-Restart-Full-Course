@@ -112,3 +112,5 @@ If the character count is not 110, the script will warn you:
 
 🚀 This script ensures **efficient processing** of sequence data while maintaining correctness! 🎯
 
+
+A carriage return (\r) is a control character used in text files to move the cursor to the beginning of a line. It originates from typewriters, where the carriage (which holds the paper) would physically return to the starting position when a new line was needed.
