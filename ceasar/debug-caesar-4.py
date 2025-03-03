@@ -49,8 +49,9 @@ def runCaesarCipherProgram():
     print(myCipherKey)
     myEncryptedMessage = encryptMessage(myMessage, myCipherKey, myAlphabet2)
     print(f'Encrypted Message: {myEncryptedMessage}')
+    # bug is printing the encrypted message instead of the decrypted
     myDecryptedMessage = decryptMessage(myEncryptedMessage, myCipherKey, myAlphabet2)
-    print(f'Decrypted Message: {myEncryptedMessage}')
+    print(f'Decrypted Message: {myDecryptedMessage}')
 
 # Main logic
 runCaesarCipherProgram()
