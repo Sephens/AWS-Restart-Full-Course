@@ -22,7 +22,9 @@ def getCipherKey():
 def encryptMessage(message, cipherKey, alphabet):
     encryptedMessage = ""
     uppercaseMessage = ""
-    uppercaseMessage = message
+    # the bug was here: the message to be encrypted was not being 
+    # converted to upper case and therefore cannot be found in the alphabet.
+    uppercaseMessage = message.upper()
     for currentCharacter in uppercaseMessage:
         position = alphabet.find(currentCharacter)
         newPosition = position + int(cipherKey)
