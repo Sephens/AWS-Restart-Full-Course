@@ -70,7 +70,7 @@ def edit_user():
             print("Invalid input!")
 
 
-inp = input("Do you want to add, check, edit, or remove a user? (Add, Check, Remove): ")
+inp = input("Do you want to add, check, edit, or remove a user? (Add, Check, Edit, Remove): ")
 
 if inp == "Add":
     add_user()

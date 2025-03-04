@@ -1,4 +1,4 @@
-import os
+import os # the os module
 
 def new_user():
     confirm = "N"
@@ -10,3 +10,5 @@ def new_user():
     os.system("sudo adduser " + username)
 
 new_user()
+
+# you can cat the `etc/passwd` file to see the user added
