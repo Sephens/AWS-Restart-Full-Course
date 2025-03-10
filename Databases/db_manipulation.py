@@ -1,19 +1,24 @@
-import sqlite3
+import mysql.connector
 
-# Connect to the SQLite database (or create it if it doesn't exist)
-conn = sqlite3.connect('Databases/world.db')
+# Connect to MySQL
+conn = mysql.connector.connect(
+    host="localhost",
+    user="root",  # Default XAMPP user
+    password="",  # No password by default
+    database="world"  # Change to your database name
+)
 cursor = conn.cursor()
 
-# Read the SQL file
-with open('Databases/world.sql', 'r') as sql_file:
-    sql_script = sql_file.read()
+# cursor.execute("SHOW DATABASES")
+cursor.execute(cursor.execute("SELECT SUM(SurfaceArea) AS 'N. America Surface Area', SUM(Population) AS 'N. America Population' FROM world.country WHERE Region = 'North America'")
+)
 
-# Execute the SQL script
-cursor.executescript(sql_script)
+result = cursor.fetchone()
+surface_area = float(result[0])  # Convert to float
+population = int(result[1])  # Convert to int
 
-# Commit the changes
-conn.commit()
+print("N. America Surface Area:", surface_area)
+print("N. America Population:", population)
 
-# Close the connection
 cursor.close()
 conn.close()
