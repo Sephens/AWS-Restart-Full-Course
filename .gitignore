@@ -3,3 +3,4 @@ myenv/
 myenviron/
 .env
 venv/
+settings.json
