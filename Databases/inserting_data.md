@@ -153,3 +153,5 @@ SET name = TRIM(name);
 ---
 
 This module provides a comprehensive understanding of how to insert data into a database, including importing `.csv` files, cleaning data, and using SQL statements effectively.
+
+Thank you for reviewing these comprehensive notes! Let me know if you need further clarification or additional details.
