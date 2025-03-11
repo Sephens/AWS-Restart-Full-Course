@@ -284,3 +284,41 @@ ORDER BY 2 ASC, 3 DESC;
 ---
 
 Thank you for reviewing these comprehensive notes! Let me know if you need further clarification or additional details.
+
+---
+
+LAB
+Task 2: Query the world database
+In this task, you query the world database using various SELECT statements and database functions.
+
+To show the existing databases, enter the following command in the terminal. 
+
+SHOW DATABASES;
+Verify that a database named world is available. If the world database is not available, contact your instructor.
+
+To review the table schema, data, and number of rows in the country table, enter the following query.
+
+SELECT * FROM world.country;
+To return a list of records where the Region is Australia and New Zealand, run the following query. This query includes an ORDER BY clause (which a previous lab introduced) that arranges the results by Population in descending order.
+
+SELECT Region, Name, Population FROM world.country WHERE Region = 'Australia and New Zealand' ORDER By Population desc;
+You can use the GROUP BY clause to group related records together. The following example starts by filtering records using a condition where the region is equal to Australia and New Zealand. The results are then grouped together by using a GROUP BY clause. The SUM() function is then applied to the grouped results to generate a total population for that region. Run the following query in your terminal.
+
+SELECT Region, SUM(Population) FROM world.country WHERE Region = 'Australia and New Zealand' GROUP By Region ORDER By SUM(Population) desc;
+This query returns a SUM() of the Population for the Australia and New Zealand region. Because the WHERE clause is filtered by Region, only the Australia and New Zealand records are aggregated. 
+
+The following example uses a windowing function to generate a running total by adding the Population of the first record to the Population of the second record and subsequent records. This query uses the OVER() clause to group the records by Region and uses the SUM() function to aggregate the records. The output displays the population of a country along side a running total of the region. Run the following query in your terminal.
+
+SELECT Region, Name, Population, SUM(Population) OVER(partition by Region ORDER BY Population) as 'Running Total' FROM world.country WHERE Region = 'Australia and New Zealand';
+The following query groups the records by Region and orders them by Population with the OVER() clause. This query also includes the RANK() function to generate a rank number indicating the position of each record in the result set. The RANK() function is useful when dealing with large groups of records. Run the following query in your terminal.
+
+SELECT Region, Name, Population, SUM(Population) OVER(partition by Region ORDER BY Population) as 'Running Total', RANK() over(partition by region ORDER BY population) as 'Ranked' FROM world.country WHERE region = 'Australia and New Zealand';
+ 
+
+Challenge
+Write a query to rank the countries in each region by their population from largest to smallest.
+
+You have to determine whether to use either the GROUP BY or OVER grouping clause and either the SUM() or RANK() function.
+SELECT Region, Name, Population, RANK() OVER(partition by Region ORDER BY Population desc) as 'Ranked' FROM world.country order by Region, Ranked;
+
+Tip: Expand the question to reveal the solution.

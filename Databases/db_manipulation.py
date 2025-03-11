@@ -3,8 +3,8 @@ import mysql.connector
 # Connect to MySQL
 conn = mysql.connector.connect(
     host="localhost",
-    user="root",  # Default XAMPP user
-    password="",  # No password by default
+    user="admin",  # Default XAMPP user
+    password="yourpassword",  # No password by default
     database="world"  # Change to your database name
 )
 cursor = conn.cursor()
@@ -107,14 +107,14 @@ cursor = conn.cursor()
 #--------------------------------------------------------------------
 
 #--------------------------9. NULL Values--------------------------------
-# cursor.execute(
-# "SELECT name, lifeexpectancy FROM country WHERE lifeexpectancy IS NULL;"
-# )
+cursor.execute(
+"SELECT name, lifeexpectancy FROM country WHERE lifeexpectancy IS NULL;"
+)
 
-# print("Cities with NULL life expectancy")
+print("Cities with NULL life expectancy")
 
-# for city, lifeExpect in cursor:
-#     print(city)
+for city, lifeExpect in cursor:
+    print(city)
 #--------------------------------------------------------------------
 
 
@@ -133,6 +133,44 @@ cursor = conn.cursor()
 
 # print("N. America Surface Area:", surface_area)
 # print("N. America Population:", population)
+
+
+
+
+
+
+# ***********************************************************************
+# WORKING WITH FUNCTIONS
+#************************************************************************
+
+#-----------------------Aggregate Functions-----------------------------
+
+# Common Aggregate Functions:
+# COUNT: Returns the number of rows in a set.
+# SUM: Returns the sum of all values in a set.
+# AVG: Returns the average of all values in a set.
+# MIN: Returns the minimum value in a set.
+# MAX: Returns the maximum value in a set.
+
+# rows = cursor.execute(
+#     "SELECT COUNT(*) AS 'Total Number of Rows' FROM countrylanguage;"
+
+# )
+
+# print(rows)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # cursor.close()
