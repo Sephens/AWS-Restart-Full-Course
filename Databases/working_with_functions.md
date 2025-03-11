@@ -201,3 +201,50 @@ SELECT ID, RTRIM(District) AS District FROM city;
 ---
 
 Thank you for reviewing these comprehensive notes! Let me know if you need further clarification or additional details.
+
+---
+
+# LAB
+
+Task 2: Query the world database
+In this task, you query the world database using various SELECT statements and database functions. You use a function to process and manipulate data in a query. There are a wide range of SQL functions, and this lab reviews a subset of commonly used functions.
+
+To show the existing databases, enter the following command in the terminal.
+
+SHOW DATABASES;
+Verify that a database named world is available. If the world database is not available, contact your instructor.
+
+To review the table schema, data, and number of rows in the country table, run the following query.
+
+SELECT * FROM world.country;
+The following query demonstrates how to use aggregate functions SUM(), MIN(), MAX(), and AVG() to summarize data. Because the query does not include a WHERE condition, the functions aggregate data from all records in the country table. Run the following query.
+
+SELECT sum(Population), avg(Population), max(Population), min(Population), count(Population) FROM world.country;
+SUM() adds all the population values together.
+AVG() generates an average across all the population values.
+MAX() finds the row with the highest population value.
+MIN() finds the row with the lowest population value.
+COUNT() finds the number of rows with a population value.
+In some cases, you might need to split a string. The following query uses SUBSTRING_FUNCTION() to spilt a string where a space occurs. Run the following query.
+
+SELECT Region, substring_index(Region, " ", 1) FROM world.country;
+After you run the query, you notice that the second column includes the beginning of each region name. 
+
+Sometimes you may need to search rows using a string fragment. The following query includes SUBSTRING_FUNCTION() as part of a condition in the WHERE clause to filter records that include Southern in the first part of the region name. Run the following query.
+
+SELECT Name, Region from world.country WHERE substring_index(Region, " ", 1) = "Southern";
+You can use the LENGTH() and TRIM() functions to determine how many characters are in a string. TRIM() clears leading and trailing blank spaces, and the LENGTH() function returns a count of the remaining characters. The next example returns only regions that have fewer than 10 characters in their names. Run the following query.
+
+SELECT Region FROM world.country WHERE LENGTH(TRIM(Region)) < 10;
+You might have noticed duplicate records in the previous example. You can use the DISTINCT() function to filter the duplicates. Run the following query.
+
+SELECT DISTINCT(Region) FROM world.country WHERE LENGTH(TRIM(Region)) < 10;
+ 
+
+Challenge
+Query the country table to return a set of records based on the following requirement.
+
+Write a query to return rows that have Micronesian/Caribbean as the name in the region column. The output should split the region as Micronesia and Caribbean into two separate columns: one named Region Name 1 and one named Region Name 2.
+SELECT Name, substring_index(Region, "/", 1) as "Region Name 1",substring_index(region, "/", -1) as "Region Name 2" FROM world.country WHERE Region = "Micronesia/Caribbean";
+
+Tip: Expand the question to reveal the solution.
