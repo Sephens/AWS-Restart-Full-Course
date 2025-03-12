@@ -287,7 +287,7 @@ Thank you for reviewing these comprehensive notes! Let me know if you need furth
 
 ---
 
-LAB
+# LAB
 Task 2: Query the world database
 In this task, you query the world database using various SELECT statements and database functions.
 
