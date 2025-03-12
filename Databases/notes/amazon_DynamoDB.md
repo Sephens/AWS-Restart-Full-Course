@@ -16,6 +16,7 @@ This document provides a detailed summary of the "Amazon DynamoDB" module, inclu
    - **Items**: Individual records in a table, identified by a **primary key**.
    - **Attributes**: Data elements within an item (similar to columns in relational databases).
    - **Partitioning**: Data is distributed across partitions based on the **partition key**.
+   - There are two ways to query a DynamoDB table: **query** and **scan**.
 
 ---
 
