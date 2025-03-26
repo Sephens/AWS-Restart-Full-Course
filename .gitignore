@@ -4,3 +4,4 @@ myenviron/
 .env
 venv/
 settings.json
+.vscode
