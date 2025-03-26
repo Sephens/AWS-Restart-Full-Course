@@ -3,215 +3,342 @@
 ## Table of Contents
 - [Serverless and Containers on AWS - Comprehensive Guide](#serverless-and-containers-on-aws---comprehensive-guide)
   - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [AWS Lambda](#aws-lambda)
-  - [Working with AWS Lambda](#working-with-aws-lambda)
-  - [APIs and REST](#apis-and-rest)
-  - [Amazon API Gateway](#amazon-api-gateway)
-  - [AWS Step Functions](#aws-step-functions)
-  - [Containers on AWS](#containers-on-aws)
-  - [Knowledge Check](#knowledge-check)
+  - [Unit Overview](#unit-overview)
+  - [Key Learning Objectives](#key-learning-objectives)
+  - [Troubleshooting Knowledge Base](#troubleshooting-knowledge-base)
+    - [Recommended Structure for Entries](#recommended-structure-for-entries)
+    - [Example Entry](#example-entry)
+    - [APIs and RESTful APIs](#apis-and-restful-apis)
+    - [Amazon API Gateway](#amazon-api-gateway)
+    - [Containers on AWS](#containers-on-aws)
+    - [AWS Step Functions](#aws-step-functions)
+  - [Practical Examples](#practical-examples)
+    - [Serverless Web Application](#serverless-web-application)
+    - [Microservices with Containers](#microservices-with-containers)
+  - [Troubleshooting Scenarios](#troubleshooting-scenarios)
+    - [Common Issues and Solutions](#common-issues-and-solutions)
   - [Key Takeaways](#key-takeaways)
 
 ---
 
-## Overview
+## Unit Overview
 
-**Serverless and Containers**  
-This unit introduces serverless computing and container technologies on AWS, focusing on key services like AWS Lambda, API Gateway, Step Functions, and container services (ECR, ECS, EKS, Fargate).  
+This unit focuses on serverless computing and container technologies on AWS, covering:
+- Event-driven computing with AWS Lambda
+- API management with Amazon API Gateway
+- Container services (ECS, EKS, Fargate)
+- Workflow orchestration with AWS Step Functions
 
-**Learning Objectives**:  
-- Understand serverless computing and AWS Lambda.  
-- Learn about APIs (REST) and Amazon API Gateway.  
-- Explore AWS Step Functions for workflow orchestration.  
-- Identify container services on AWS and their use cases.  
-
-**Duration**:  
-- Total estimated time: ~5 hours (including labs).  
-
-**Example**:  
-A startup uses AWS Lambda for backend processing and API Gateway to expose REST APIs, reducing infrastructure costs by 70%.  
+**Duration**: Self-paced with hands-on exercises  
+**Target Audience**: Cloud practitioners, developers, and solutions architects  
 
 ---
 
-## AWS Lambda
+## Key Learning Objectives
 
-**What is AWS Lambda?**  
-A serverless compute service that runs code in response to events (e.g., S3 uploads, HTTP requests) without managing servers.  
+By the end of this unit, you should be able to:
 
-**Key Features**:  
-- **Event-Driven**: Triggers include S3, DynamoDB, CloudWatch Events.  
-- **Scaling**: Automatically scales with request volume.  
-- **Pay-per-Use**: Billed per execution (100ms increments).  
+1. **AWS Lambda**
+   - Explain serverless computing concepts
+   - Create and configure Lambda functions
+   - Implement event-driven architectures
 
-**Example**:  
-```python
-# Lambda function (Python) to process S3 uploads
-import boto3
-def lambda_handler(event, context):
-    s3 = boto3.client('s3')
-    bucket = event['Records'][0]['s3']['bucket']['name']
-    key = event['Records'][0]['s3']['object']['key']
-    print(f"File {key} uploaded to {bucket}")
+2. **APIs and RESTful APIs**
+   - Describe REST architectural principles
+   - Differentiate between HTTP methods (GET, POST, PUT, DELETE)
+   - Implement API endpoints
+
+3. **Amazon API Gateway**
+   - Create REST APIs
+   - Configure authentication and authorization
+   - Implement throttling and caching
+
+4. **Containers on AWS**
+   - Compare containers vs. virtual machines
+   - Deploy applications using ECS/EKS
+   - Choose between Fargate and EC2 launch types
+
+5. **AWS Step Functions**
+   - Design state machines
+   - Implement workflow orchestration
+   - Handle errors and retries
+
+---
+
+## Troubleshooting Knowledge Base
+
+### Recommended Structure for Entries
+
+```markdown
+### [Issue Description]
+**Service**: [AWS Service]  
+**Category**: Compute/Automation  
+**Symptoms**:  
+- [Observable behavior]  
+- [Error messages]  
+
+**Root Cause**:  
+- [Technical explanation]  
+
+**Solution**:  
+1. [Step-by-step resolution]  
+2. [AWS CLI commands if applicable]  
+
+**Prevention**:  
+- [Best practices]  
+- [Monitoring suggestions]  
 ```
 
-**Traditional vs. Serverless**:  
-| **Aspect**       | **Traditional**               | **Serverless (Lambda)**       |
-|------------------|-------------------------------|-------------------------------|
-| **Provisioning** | Manual (EC2 instances)        | Automatic (AWS-managed)       |
-| **Scaling**      | Manual/ASG                   | Auto-scaling                  |
-| **Cost**         | Pay for idle resources        | Pay only for executions       |
+### Example Entry
+```markdown
+### Lambda Function Timeout
+**Service**: AWS Lambda  
+**Category**: Compute  
+**Symptoms**:  
+- Function fails after 3 seconds  
+- CloudWatch shows "Task timed out after 3.00 seconds"  
 
-**Lab Tasks**:  
-1. Create a Lambda function triggered by a CloudWatch schedule.  
-2. Debug using CloudWatch Logs.  
+**Root Cause**:  
+- Default timeout is 3 seconds  
+- Function processing large dataset  
+
+**Solution**:  
+1. Navigate to Lambda console  
+2. Increase timeout under Configuration → General configuration  
+3. Optimize code:  
+   ```python
+   # Process data in smaller batches
+   for chunk in divide_chunks(large_data, 1000):
+       process(chunk)
+   ```
+
+**Prevention**:  
+- Set appropriate timeout during creation  
+- Implement pagination for large datasets  
+```
 
 ---
 
-## Working with AWS Lambda
+## Detailed Service Breakdown
 
-**Key Labs**:  
-1. **Basic Lambda Lab**:  
-   - Create a function with IAM permissions.  
-   - Add a Lambda layer (e.g., for external libraries like `requests`).  
-   - Test with a mock S3 event.  
+### AWS Lambda
 
-2. **Challenge Lab**:  
-   - Build a Lambda function triggered by S3 uploads that sends an SNS notification.  
+**Key Concepts**:
+- Event sources (S3, DynamoDB, API Gateway)
+- Cold starts vs. warm starts
+- Concurrency limits
 
-**Example IAM Policy**:  
+**Example: Image Processing Pipeline**
+```python
+import boto3
+
+def lambda_handler(event, context):
+    s3 = boto3.client('s3')
+    rekognition = boto3.client('rekognition')
+    
+    # Process uploaded image
+    response = rekognition.detect_labels(
+        Image={'S3Object': {'Bucket': event['Bucket'], 'Name': event['Key']}}
+    )
+    
+    # Store results
+    s3.put_object(
+        Bucket='results-bucket',
+        Key=f"analysis/{event['Key']}",
+        Body=str(response)
+    )
+```
+
+**Common Issues**:
+- Permission errors (missing IAM roles)
+- Resource constraints (memory/timeout)
+- VPC configuration challenges
+
+---
+
+### APIs and RESTful APIs
+
+**HTTP Methods Deep Dive**:
+| Method | Idempotent | Safe | Typical Status Codes |
+|--------|------------|------|----------------------|
+| GET    | Yes        | Yes  | 200, 404             |
+| POST   | No         | No   | 201, 400             |
+| PUT    | Yes        | No   | 200, 204             |
+| DELETE | Yes        | No   | 200, 404             |
+
+**Best Practices**:
+- Use nouns for resources (`/users` not `/getUsers`)
+- Implement HATEOAS for discoverability
+- Version APIs (`/v1/products`)
+
+---
+
+### Amazon API Gateway
+
+**Architecture Pattern**:
+```mermaid
+graph LR
+    Client --> API_Gateway
+    API_Gateway --> Lambda
+    API_Gateway --> EC2
+    API_Gateway --> DynamoDB
+```
+
+**Advanced Features**:
+- Usage plans and API keys
+- Request/response transformation
+- Custom authorizers (Lambda)
+
+---
+
+### Containers on AWS
+
+**Service Comparison**:
+| Feature          | ECS           | EKS            | Fargate       |
+|-----------------|---------------|----------------|---------------|
+| Orchestration   | AWS-native    | Kubernetes     | Serverless    |
+| Management      | Moderate      | Complex        | Minimal       |
+| Best For        | AWS-centric   | Hybrid/multi-cloud | Quick deployments |
+
+**Deployment Example**:
+```bash
+# Deploy to ECS Fargate
+aws ecs register-task-definition \
+    --family my-app \
+    --cpu 256 --memory 512 \
+    --container-definitions file://container-def.json
+
+aws ecs create-service \
+    --cluster my-cluster \
+    --service-name my-service \
+    --task-definition my-app:1 \
+    --desired-count 3 \
+    --launch-type FARGATE
+```
+
+---
+
+### AWS Step Functions
+
+**State Machine Example**:
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [{
-    "Effect": "Allow",
-    "Action": ["s3:GetObject"],
-    "Resource": "arn:aws:s3:::my-bucket/*"
-  }]
+  "StartAt": "ProcessOrder",
+  "States": {
+    "ProcessOrder": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:123456789012:function:validateOrder",
+      "Next": "CheckInventory"
+    },
+    "CheckInventory": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.inStock",
+          "BooleanEquals": true,
+          "Next": "ChargeCustomer"
+        }
+      ],
+      "Default": "NotifyOutOfStock"
+    }
+  }
 }
 ```
 
-**Troubleshooting Tips**:  
-- Check CloudWatch Logs for errors.  
-- Verify IAM roles have correct permissions.  
+**Error Handling Patterns**:
+- Exponential backoff retries
+- Catch states for failure recovery
+- Parallel state branching
 
 ---
 
-## APIs and REST
+## Practical Examples
 
-**What is a REST API?**  
-An architectural style for web services using HTTP methods (GET, POST, PUT, DELETE) to interact with resources.  
-
-**HTTP Methods**:  
-- **GET**: Retrieve data (e.g., fetch user details).  
-- **POST**: Create data (e.g., submit a form).  
-- **PUT**: Update data (e.g., edit a profile).  
-- **DELETE**: Remove data (e.g., delete a record).  
-
-**Example Request/Response**:  
-```http
-GET /users/1 HTTP/1.1
-Host: api.example.com
-
-HTTP/1.1 200 OK
-{"id": 1, "name": "John Doe"}
+### Serverless Web Application
+```mermaid
+graph TB
+    User --> APIGateway
+    APIGateway --> LambdaAuth[Cognito Auth Lambda]
+    APIGateway --> LambdaCRUD[CRUD Lambda]
+    LambdaCRUD --> DynamoDB
+    LambdaCRUD --> S3[File Storage]
 ```
 
-**Status Codes**:  
-- `200 OK`: Success.  
-- `404 Not Found`: Resource not found.  
-- `500 Server Error`: Backend failure.  
-
----
-
-## Amazon API Gateway
-
-**Purpose**:  
-Fully managed service to create, publish, and secure APIs at scale.  
-
-**Key Benefits**:  
-- **Integration**: Connects to Lambda, EC2, or external endpoints.  
-- **Security**: Supports IAM, Cognito, and API keys.  
-- **Traffic Management**: Throttling and caching.  
-
-**Example Architecture**:  
-1. Client → API Gateway → Lambda → DynamoDB.  
-2. Response routed back through API Gateway.  
-
-**Use Case**:  
-A mobile app uses API Gateway to expose Lambda functions for user authentication and data retrieval.  
-
----
-
-## AWS Step Functions
-
-**Purpose**:  
-Orchestrates serverless workflows using state machines (e.g., order processing).  
-
-**Key Features**:  
-- **Visual Workflows**: Define steps as JSON (e.g., `"Type": "Task"`).  
-- **Retry Logic**: Handles failures automatically.  
-- **Integrations**: Works with Lambda, ECS, SNS.  
-
-**Example Workflow**:  
-1. Start → Validate input (Lambda) → Process payment (Lambda) → Send confirmation (SNS) → End.  
-
-**Use Case**:  
-An e-commerce site uses Step Functions to manage order fulfillment across multiple services.  
-
----
-
-## Containers on AWS
-
-**Key Services**:  
-1. **Amazon ECR**: Docker image registry (stores/tracks images).  
-2. **Amazon ECS**: Orchestrates containers (Docker compatible).  
-3. **Amazon EKS**: Managed Kubernetes.  
-4. **AWS Fargate**: Serverless containers (no EC2 management).  
-
-**Example Deployment**:  
-```bash
-# Push image to ECR
-aws ecr get-login-password | docker login --username AWS --password-stdin 123456789.dkr.ecr.us-east-1.amazonaws.com
-docker push 123456789.dkr.ecr.us-east-1.amazonaws.com/my-app:latest
+### Microservices with Containers
+```mermaid
+graph LR
+    ALB --> ServiceA[Order Service]
+    ALB --> ServiceB[Payment Service]
+    ALB --> ServiceC[Notification Service]
+    ServiceA --> RDS
+    ServiceB --> DynamoDB
+    ServiceC --> SQS
 ```
 
-**Fargate vs. EC2**:  
-| **Feature**       | **Fargate**                     | **EC2**                     |
-|------------------|---------------------------------|-----------------------------|
-| **Management**   | No servers (AWS-managed)        | Self-managed instances      |
-| **Scaling**      | Automatic                       | Manual/ASG                 |
-| **Cost**         | Pay per vCPU/memory             | Pay for EC2 instances      |
-
 ---
 
-## Knowledge Check
+## Troubleshooting Scenarios
 
-**Questions & Answers**:  
-1. **Q**: Which service runs containers without managing servers?  
-   **A**: AWS Fargate.  
-2. **Q**: What stores Docker images on AWS?  
-   **A**: Amazon ECR.  
-3. **Q**: Which REST method creates a resource?  
-   **A**: POST.  
+### Common Issues and Solutions
 
-**Scenario**:  
-A developer needs to deploy a microservice. They should:  
-1. Build a Docker image.  
-2. Push to ECR.  
-3. Deploy using ECS Fargate.  
+1. **Lambda Cold Starts**
+   - **Solution**: Provisioned concurrency
+   - **CLI Command**:
+     ```bash
+     aws lambda put-provisioned-concurrency-config \
+       --function-name my-function \
+       --qualifier LIVE \
+       --provisioned-concurrent-executions 100
+     ```
+
+2. **API Gateway 504 Errors**
+   - **Check**: Lambda timeout < API Gateway timeout (29s max)
+   - **Configuration**:
+     ```yaml
+     # SAM template
+     Resources:
+       MyApi:
+         Type: AWS::Serverless::Api
+         Properties:
+           StageName: Prod
+           DefinitionBody:
+             timeoutInMillis: 29000
+     ```
+
+3. **ECS Task Stuck in PROVISIONING**
+   - **Causes**: Insufficient Fargate capacity
+   - **Resolution**:
+     - Check AWS Service Health Dashboard
+     - Retry in different AZ
+     - Adjust task requirements (CPU/memory)
 
 ---
 
 ## Key Takeaways
 
-- **Serverless**: Lambda + API Gateway for event-driven apps.  
-- **Containers**: Use ECS/EKS for orchestration; Fargate for serverless.  
-- **Workflows**: Step Functions for multi-step processes.  
+1. **Serverless Benefits**:
+   - No server management
+   - Automatic scaling
+   - Pay-per-use pricing
 
-**Example Project**:  
-A weather app uses Lambda to fetch data, API Gateway for REST endpoints, and Fargate to run a containerized dashboard.  
+2. **Container Best Practices**:
+   - One process per container
+   - Immutable images
+   - Health checks
 
-**Feedback**: Contact [AWS Training](https://support.aws.amazon.com/#/contacts/aws-training).  
+3. **Workflow Design**:
+   - Keep state machines simple
+   - Implement proper error handling
+   - Use parallel processing where possible
+
+**Next Steps**:
+- Complete hands-on labs in AWS Console
+- Contribute to Troubleshooting Knowledge Base
+- Explore AWS certification paths
+
+---
+
+**Feedback**:  
+For corrections or questions, contact [AWS Training Support](https://support.aws.amazon.com/#/contacts/aws-training).  
 
 © 2023, Amazon Web Services, Inc. or its affiliates. All rights reserved.
