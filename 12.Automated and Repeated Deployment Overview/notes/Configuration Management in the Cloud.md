@@ -1,3 +1,13 @@
+---
+title: "Configuration Management in AWS"
+author: "Steven Odhiambo"
+company: "RiseTechnon Inc."
+copyright: "© 2025 RiseTechnon Inc. All rights reserved."
+license: "Proprietary"
+version: "1.2"
+date: "2025-04-02"
+disclaimer: "This document contains proprietary techniques of RiseTechnon Inc. Unauthorized distribution prohibited."
+---
 # Configuration Management in AWS - Comprehensive Guide
 
 ## Table of Contents
