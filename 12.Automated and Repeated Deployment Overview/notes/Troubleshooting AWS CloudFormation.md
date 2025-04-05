@@ -6,6 +6,8 @@ copyright: "© 2025 RiseTechnon Inc. All rights reserved."
 license: "Proprietary"
 version: "1.2"
 date: "2025-04-02"
+repo: "github.com/open-cloud/aws-re/start"
+contribute: "Contributions welcome via pull requests"
 disclaimer: "This document contains proprietary techniques of RiseTechnon Inc. Unauthorized distribution prohibited."
 ---
 # Troubleshooting AWS CloudFormation - Comprehensive Guide
