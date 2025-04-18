@@ -150,5 +150,5 @@ The key design principles promoted in the AWS Well-Architected Framework include
 ---
 
 ## Thank You
-
-© 2022 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copyright, lending, or selling is prohibited. Correlation, feedback, or other questions? Contact us at [http://anazon.aws.amazon.com/products/aws-raising](https://anazon.aws.amazon.com/products/aws-raising). All trademarks are the property of their owners.
+---
+© 2025, RiseTechnon. All rights reserved.

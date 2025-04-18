@@ -242,4 +242,4 @@ The **AWS Well-Architected Framework** is an essential tool for cloud architects
 
 ---
 
-© 2022, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+© 2025, RiseTechnon. All rights reserved.

@@ -144,5 +144,5 @@ After transitioning to AWS, the data center might look like this:
 ---
 
 ## Thank You
-
-© 2022 Amazon Web Services, Inc. or its affiliates. All rights reserved. This work may not be reproduced or redistributed, in whole or in part, without prior written permission from Amazon Web Services, Inc. Commercial copying, lending, or selling is prohibited. Correlation, feedback, or other questions? Contact us at [http://anazon.aws.amazon.com/fr/corrector/aws-routing](https://anazon.aws.amazon.com/fr/corrector/aws-routing). All trademarks are the property of their owners.
+---
+© 2025, RiseTechnon. All rights reserved.

@@ -166,5 +166,4 @@ For more information about the AWS CAF, see the [AWS Cloud Adoption Framework (A
 The AWS Cloud Adoption Framework (AWS CAF) is a comprehensive guide that helps organizations align their people, processes, and technology to successfully adopt cloud computing. By breaking down the cloud adoption process into six core perspectives, the AWS CAF provides a structured approach to ensure that organizations can achieve their cloud adoption goals efficiently and effectively.
 
 ---
-
-© 2022, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+© 2025, RiseTechnon. All rights reserved.
