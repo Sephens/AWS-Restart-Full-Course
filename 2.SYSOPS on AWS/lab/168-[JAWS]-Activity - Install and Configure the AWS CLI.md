@@ -130,7 +130,7 @@ This lab will take approximately **45 minutes** to complete.
 1. **Navigate to IAM**:
    - In the AWS Management Console, search for **IAM** in the search bar and select it.
 
-2. **View the `awsstudent` User**:
+2. **View your account user name for example, the `awsstudent` User**:
    - In the left navigation pane, click **Users**, then select **awsstudent**.
    - Under the **Permissions** tab, click the arrow next to **lab_policy**, then click the `{} JSON` button to view the policy document.
 
